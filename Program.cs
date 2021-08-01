@@ -42,7 +42,7 @@ namespace Rooms
                     
                 }
             }
-            DeleteStandAloneRoom(rooms);
+            //DeleteStandAloneRoom(rooms);
             var valueCount = rooms.Where(r => r.RoomExists == 1).Count();
             var valueList = new List<int>();
             for (int i = 1; i <= valueCount; i++)
@@ -67,40 +67,95 @@ namespace Rooms
         {
             foreach(var room in rooms)
             {
-                if (room.X > 0)
+                if (room.X == 0)
                 {
-                    var neighborTop = rooms.Where(r => r.X == room.X - 1 && r.Y == room.Y).FirstOrDefault();
-                    
-                    if(neighborTop.RoomExists == 0)
+                    var bottomRoom = rooms.Where(r => r.X == room.X + 1 && r.Y == room.Y).First();
+
+                    if (room.Y == 0)
                     {
-                        if(room.Y > 0)
-                        {
-                            var neighborLeft = rooms.Where(r => r.Y == room.Y - 1 && r.X == room.X).FirstOrDefault();
-                            if (neighborLeft.RoomExists == 0)
-                            {
-                                room.RoomExists = 0;
-                            }
-                        }
-                        else
+                        var rightRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y + 1).First();
+                        if (rightRoom.RoomExists == 0 && bottomRoom.RoomExists == 0)
                         {
                             room.RoomExists = 0;
                         }
-                        
+                    }
+                    else if (room.Y == rooms.Last().Y)
+                    {
+                        var leftRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y - 1).First();
+                        if (leftRoom.RoomExists == 0 && bottomRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
+                    }
+                    else
+                    {
+                        var rightRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y + 1).First();
+                        var leftRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y - 1).First();
+                        if (rightRoom.RoomExists == 0 && leftRoom.RoomExists == 0 && bottomRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
                     }
                 }
-            }
-
-            foreach(var room in rooms.Where(r => r.X == 0))
-            {
-                var neighborLeft = rooms.Where(r => r.Y == room.Y - 1 && r.X == room.X).FirstOrDefault();
-                if(neighborLeft.RoomExists == 0)
+                else if (room.X == rooms.Last().X)
                 {
-                    var neighborBottom = rooms.Where(r => r.X == room.X + 1 && r.Y == room.Y).FirstOrDefault();
-                    if (neighborBottom.RoomExists == 0)
-                    {
-                        room.RoomExists = 0;
-                    }
+                    var topRoom = rooms.Where(r => r.X == room.X - 1 && r.Y == room.Y).First();
 
+                    if (room.Y == 0)
+                    {
+                        var rightRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y + 1).First();
+                        if (rightRoom.RoomExists == 0 && topRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
+                    }
+                    else if (room.Y == rooms.Last().Y)
+                    {
+                        var leftRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y - 1).First();
+                        if (leftRoom.RoomExists == 0 && topRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
+                    }
+                    else
+                    {
+                        var rightRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y + 1).First();
+                        var leftRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y - 1).First();
+                        if (rightRoom.RoomExists == 0 && leftRoom.RoomExists == 0 && topRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    var topRoom = rooms.Where(r => r.X == room.X - 1 && r.Y == room.Y).First();
+                    var bottomRoom = rooms.Where(r => r.X == room.X + 1 && r.Y == room.Y).First();
+                    if (room.Y == 0)
+                    {
+                        var rightRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y + 1).First();
+                        if (rightRoom.RoomExists == 0 && topRoom.RoomExists == 0 && bottomRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
+                    }
+                    else if (room.Y == rooms.Last().Y)
+                    {
+                        var leftRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y - 1).First();
+                        if (leftRoom.RoomExists == 0 && topRoom.RoomExists == 0 && bottomRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
+                    }
+                    else
+                    {
+                        var rightRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y + 1).First();
+                        var leftRoom = rooms.Where(r => r.X == room.X && r.Y == room.Y - 1).First();
+                        if (rightRoom.RoomExists == 0 && leftRoom.RoomExists == 0 && topRoom.RoomExists == 0 && bottomRoom.RoomExists == 0)
+                        {
+                            room.RoomExists = 0;
+                        }
+                    }
                 }
             }
         }
